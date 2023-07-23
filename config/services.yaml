@@ -4,8 +4,15 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    images_directory: '%kernel.project_dir%/public/images'
+    mapbox_access_token: 'pk.eyJ1Ijoic2FiMjYiLCJhIjoiY2xnajd2b2FlMTJ4OTN1dDF2bzI3cHk1OSJ9.lT-sd5DlES11aj4LfFwn7w'
 
 services:
+    App\Controller\UserBoutiqueController:
+        arguments:
+            $pdf: '@knp_snappy.pdf'
+        tags: [ 'controller.service_arguments' ]
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -22,3 +29,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    knp_snappy.pdf:
+        class: Knp\Snappy\Pdf
+        arguments:
+            - /chemin/vers/wkhtmltopdf
+            - [] 
+

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+        
+             background-image: url('/images/sonede.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+        }
+    </style>
+ {# templates/client/register.html.twig #}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Inscription</h1>
+            {% if form_errors(form) %}
+                <div class="alert alert-danger">{{ form_errors(form) }}</div>
+            {% endif %}
+            <form method="post">
+                  {{ form_row(form._token) }}
+                {{ form_row(form.Nomprenom, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Adresse, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Mail, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Motdepasse, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Tel, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Cin, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+    
+{% endblock %}

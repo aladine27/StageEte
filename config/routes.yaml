@@ -1,3 +1,15 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+# config/routes.yaml
+client_registration:
+    path: /inscription
+    controller: App\Controller\ClientController::register
+
+client_login:
+    path: /connexion
+    controller: App\Controller\ClientController::login
+home:
+    path: /home
+    controller: App\Controller\ClientController::home
+    

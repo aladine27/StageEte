@@ -1,0 +1,60 @@
+{# templates/client/login.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+        
+             background-image: url('/images/sonede.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+        }
+    </style>
+   
+    {# Votre formulaire de connexion ici #}
+    <!-- templates/client/login.html.twig -->
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+         <h1 class="card-title" style="color: #0071ce;">Authentification</h1>
+           
+            <form method="post">
+                {{ form_row(form.Mail, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form.Motdepasse, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_row(form._token) }}
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
