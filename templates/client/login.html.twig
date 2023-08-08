@@ -10,6 +10,7 @@
         
              background-image: url('/images/sonede.png');
             background-size: cover;
+            object-position:0% 0%;
             background-position: center;
             min-height: 90vh;
             display: flex;
@@ -52,6 +53,7 @@
                 {{ form_row(form.Motdepasse, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
                 {{ form_row(form._token) }}
                 <button type="submit" class="btn btn-primary">Login</button>
+                <a href="{{ path('forgotpassword') }}" class="btn btn-modifier-compte">mot de passe oublié</a>
             </form>
         </div>
     </div>

@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 /**
  * @extends ServiceEntityRepository<Client>
  *
@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Client[]    findAll()
  * @method Client[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ClientRepository extends ServiceEntityRepository
+class ClientRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -37,6 +37,10 @@ class ClientRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function loadUserByUsername(string $email): ?Client
+    {
+        return $this->findOneBy(['Mail' => $email]);
     }
 
 //    /**

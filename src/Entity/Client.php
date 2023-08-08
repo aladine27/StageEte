@@ -5,10 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Entity(repositoryClass: "App\Repository\ClientRepository")]
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
-     #[ORM\Id]
+    #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
     private $id;
@@ -30,6 +31,49 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", length: 20)]
     private $Cin;
+
+    // ...
+
+    #[ORM\OneToMany(targetEntity: "App\Entity\Contrat", mappedBy: "client")]
+    private $contrats;
+
+    public function __construct()
+    {
+        $this->contrats = new ArrayCollection();
+    }
+
+    // ...
+
+    /**
+     * @return ArrayCollection|Contrat[]
+     */
+    public function getContrats()
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): self
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats[] = $contrat;
+            $contrat->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): self
+    {
+        if ($this->contrats->contains($contrat)) {
+            $this->contrats->removeElement($contrat);
+            // set the owning side to null (unless already changed)
+            if ($contrat->getClient() === $this) {
+                $contrat->setClient(null);
+            }
+        }
+
+        return $this;
+    }
 
      public function getUsername(): string
     {

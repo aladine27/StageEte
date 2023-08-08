@@ -1,0 +1,203 @@
+{# templates/client/modifiercompte.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ <style><!-- Inclusion des fichiers CSS de Bootstrap -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        /* Styles pour la barre de navigation */
+        .navbar {
+            color: #888;
+            height: 50px;
+            position: fixed; /* Pour positionner la navbar en haut de la page */
+            top: 0; /* Pour définir la position verticale en haut de la page */
+            left: 0; /* Pour définir la position horizontale à gauche de la page */
+            width: 100%; /* Pour occuper toute la largeur de la page */
+            background-color: #888; /* Couleur gris pour la navbar */
+          
+        }
+
+        /* Styles pour le logo "Portail Sonede" */
+        .navbar-brand {
+            font-size: 20px;
+            background-color: #0971ce;
+            font-weight: 500;
+            height: 40px;
+            display: flex; /* Pour utiliser le modèle de boîte flexible */
+            align-items: center; /* Pour centrer verticalement le logo */
+            padding: 0 10px;
+            color: #fff;
+            top: 0; /* Pour définir la position verticale en haut de la page */
+            left: 0;
+        }
+
+        /* Styles pour le bouton de déconnexion */
+        .logout-button {
+            color: #0971ce;
+            height: 40px;
+            float: right;
+            font-size: 20px;
+            line-height: 40px;
+            padding-right: 10px;
+            cursor: pointer;
+        }
+
+        /* Styles pour la barre de navigation horizontale */
+        .navbar-horizontal {
+            color: #0971ce;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Pour centrer verticalement le logo et le bouton de déconnexion */
+            padding: 10px 20px; /* Pour ajouter de l'espace autour des liens */
+        }
+
+        /* Styles pour les liens de navigation dans la barre horizontale */
+        .navbar-horizontal a {
+            color: black;
+            text-decoration: none;
+            margin-right: 10px; /* Pour ajouter un espace entre les liens */
+        }
+
+        /* Styles pour la barre latérale */
+        .sidebar {
+            background-color: #0971ce;
+            color: white;
+            width: 50px;
+            height: 60vh;
+            padding-top: 20px;
+        }
+
+        /* Styles pour le contenu */
+        .content {
+        padding:10px;
+        display:flex;
+        flex-direction:row;
+        justify-content:space-evenly;
+        gap:20px;
+        background:white;
+        border-radius:12px;
+        width:100%;
+        
+        }
+        body {
+            background-image: url('/images/body.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 26px;
+            margin: 26px;
+            max-width: 400px;
+            width: 200%;
+            background-color: #fff;
+            position: absolute;
+            bottom: 100px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            margin-bottom: 4px;
+            font-weight:600;
+            color:black;
+
+        }
+
+        .btn-modifier-compte {
+            margin-top:15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .btn-modifier-compte:hover {
+            background-color: #0056b3;
+        }
+        .content-text{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+
+
+            }
+            .content-number{
+            color: #0056b3;
+
+            }
+        
+        /* Styles pour le bouton "Prestation" */
+        .btn-prestation {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .btn-prestation:hover {
+            background-color: #0056b3;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        
+
+    
+         
+    .content-item{
+         display:flex;
+        flex-direction:row;
+        justify-content:flex-start;
+        gap:10px;
+    }
+    .content-image{
+        width:60px;
+        height:60px;
+        background-color:green;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    .navbar{
+        padding-top:0px;
+    }
+    </style>
+<div class="navbar">
+    <div class="navbar-brand">Portail SONEDE</div>
+    {% if app.user %}
+        <a href="{{ path('logout') }}">
+            <svg fill="#0056b3" width="40px" height="40px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <title>logout</title>
+                <path d="M0 9.875v12.219c0 1.125 0.469 2.125 1.219 2.906 0.75 0.75 1.719 1.156 2.844 1.156h6.125v-2.531h-6.125c-0.844 0-1.5-0.688-1.5-1.531v-12.219c0-0.844 0.656-1.5 1.5-1.5h6.125v-2.563h-6.125c-1.125 0-2.094 0.438-2.844 1.188-0.75 0.781-1.219 1.75-1.219 2.875zM6.719 13.563v4.875c0 0.563 0.5 1.031 1.063 1.031h5.656v3.844c0 0.344 0.188 0.625 0.5 0.781 0.125 0.031 0.25 0.031 0.313 0.031 0.219 0 0.406-0.063 0.563-0.219l7.344-7.344c0.344-0.281 0.313-0.844 0-1.156l-7.344-7.313c-0.438-0.469-1.375-0.188-1.375 0.563v3.875h-5.656c-0.563 0-1.063 0.469-1.063 1.031z"></path>
+            </svg>
+        </a>
+    {% endif %}
+</div>
+    <div class="container">
+     <h1>Modifier Compte</h1>
+        <form method="post">
+            {{ form_row(form.Nomprenom, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+            {{ form_row(form.Adresse, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+            {{ form_row(form.Tel, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+            {{ form_row(form.Mail, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+            {{ form_row(form.Cin, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+            {{ form_row(form._token) }}
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
+    </div>
+{% endblock %}
+

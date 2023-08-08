@@ -1,5 +1,390 @@
 {% extends 'base.html.twig' %}
-{% block body %}
 
-<h1>bienvenu</h1>
+{% block body %}
+    <style><!-- Inclusion des fichiers CSS de Bootstrap -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        /* Styles pour la barre de navigation */
+        .navbar {
+            color: #888;
+            height: 50px;
+            position: fixed; /* Pour positionner la navbar en haut de la page */
+            top: 0; /* Pour définir la position verticale en haut de la page */
+            left: 0; /* Pour définir la position horizontale à gauche de la page */
+            width: 100%; /* Pour occuper toute la largeur de la page */
+            background-color: #888; /* Couleur gris pour la navbar */
+          
+        }
+
+        /* Styles pour le logo "Portail Sonede" */
+        .navbar-brand {
+            font-size: 20px;
+            background-color: #0971ce;
+            font-weight: 500;
+            height: 40px;
+            display: flex; /* Pour utiliser le modèle de boîte flexible */
+            align-items: center; /* Pour centrer verticalement le logo */
+            padding: 0 10px;
+            color: #fff;
+            top: 0; /* Pour définir la position verticale en haut de la page */
+            left: 0;
+        }
+
+        /* Styles pour le bouton de déconnexion */
+        .logout-button {
+            color: #0971ce;
+            height: 40px;
+            float: right;
+            font-size: 20px;
+            line-height: 40px;
+            padding-right: 10px;
+            cursor: pointer;
+        }
+
+        /* Styles pour la barre de navigation horizontale */
+        .navbar-horizontal {
+            color: #0971ce;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Pour centrer verticalement le logo et le bouton de déconnexion */
+            padding: 10px 20px; /* Pour ajouter de l'espace autour des liens */
+        }
+
+        /* Styles pour les liens de navigation dans la barre horizontale */
+        .navbar-horizontal a {
+            color: black;
+            text-decoration: none;
+            margin-right: 10px; /* Pour ajouter un espace entre les liens */
+        }
+
+        /* Styles pour la barre latérale */
+        .sidebar {
+            background-color: #0971ce;
+            color: white;
+            width: 50px;
+            height: 60vh;
+            padding-top: 20px;
+        }
+
+        /* Styles pour le contenu */
+        .content {
+        padding:10px;
+        display:flex;
+        flex-direction:row;
+        justify-content:space-evenly;
+        gap:20px;
+        background:white;
+        border-radius:12px;
+        width:100%;
+        
+        }
+        body {
+            background-image: url('/images/body.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 26px;
+            margin: 26px;
+            max-width: 400px;
+            width: 200%;
+            background-color: #fff;
+            position: absolute;
+            bottom: 100px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            margin-bottom: 4px;
+            font-weight:600;
+            color:black;
+
+        }
+
+        .btn-modifier-compte {
+            margin-top:15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .btn-modifier-compte:hover {
+            background-color: #0056b3;
+        }
+        .content-text{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+
+
+            }
+            .content-number{
+            color: #0056b3;
+
+            }
+        
+        /* Styles pour le bouton "Prestation" */
+        .btn-prestation {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .btn-prestation:hover {
+            background-color: #0056b3;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        
+  .table {
+            margin-left: 20px; /* Add some margin to create space between the content and the right side */
+        }
+    
+         
+    .content-item{
+         display:flex;
+        flex-direction:row;
+        justify-content:flex-start;
+        gap:10px;
+    }
+    .content-image{
+        width:60px;
+        height:60px;
+        background-color:green;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    .navbar{
+        padding-top:0px;
+    }
+    .table {
+            margin-left: 20px;
+        }
+    </style>
+
+
+
+
+<div class="navbar">
+    <div class="navbar-brand">Portail SONEDE</div>
+    {% if app.user %}
+        <a href="{{ path('logout') }}">
+            <svg fill="#0056b3" width="40px" height="40px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <title>logout</title>
+                <path d="M0 9.875v12.219c0 1.125 0.469 2.125 1.219 2.906 0.75 0.75 1.719 1.156 2.844 1.156h6.125v-2.531h-6.125c-0.844 0-1.5-0.688-1.5-1.531v-12.219c0-0.844 0.656-1.5 1.5-1.5h6.125v-2.563h-6.125c-1.125 0-2.094 0.438-2.844 1.188-0.75 0.781-1.219 1.75-1.219 2.875zM6.719 13.563v4.875c0 0.563 0.5 1.031 1.063 1.031h5.656v3.844c0 0.344 0.188 0.625 0.5 0.781 0.125 0.031 0.25 0.031 0.313 0.031 0.219 0 0.406-0.063 0.563-0.219l7.344-7.344c0.344-0.281 0.313-0.844 0-1.156l-7.344-7.313c-0.438-0.469-1.375-0.188-1.375 0.563v3.875h-5.656c-0.563 0-1.063 0.469-1.063 1.031z"></path>
+            </svg>
+        </a>
+    {% endif %}
+</div>
+<div class="sidebar">
+    <!-- Contenu de la barre latérale -->
+</div>
+<div class="content">
+     <a href="{{ path('list_ongoing_reclamations') }}"> 
+        <div class ="content-item">
+            <div class ="content-image">
+                <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0303 8.78039L8.99993 16.8107L5.4696 13.2804L6.53026 12.2197L8.99993 14.6894L15.9696 7.71973L17.0303 8.78039Z" fill="#FFFF"/>
+                    </svg>
+            </div>
+            <div class ="content-text">    
+                <div class ="content-number" > Demandes en cours  </div>    
+                <div class ="content-number" id="reclamationsCount">(loading)  </div>
+            </div>        
+        </div>
+    </a> 
+       <a href="{{ path('refus_reclamations') }}"> 
+        <div class ="content-item">
+            <div class ="content-image" style="background:red">
+                <?xml version="1.0" ?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                  <svg fill="#FFF" width="800px" height="800px" viewBox="0 0 200 200" data-name="Layer 1" id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"><title/><path d="M114,100l49-49a9.9,9.9,0,0,0-14-14L100,86,51,37A9.9,9.9,0,0,0,37,51l49,49L37,149a9.9,9.9,0,0,0,14,14l49-49,49,49a9.9,9.9,0,0,0,14-14Z"/>
+                </svg>
+            </div>
+            <div class ="content-text">    
+                <div class ="content-number" > Demandes rejeté </div>    
+                <div class ="content-number" id="refusReclamationsCount">(loading)  </div>
+            </div>        
+        </div>
+    </a>       
+     </a> 
+       <a href="#"> 
+        <div class ="content-item">
+            <div class ="content-image" style="background:blue">
+               <svg width="800px" height="800px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.7003 17.1099V18.22C12.7003 18.308 12.6829 18.395 12.6492 18.4763C12.6156 18.5576 12.5662 18.6316 12.504 18.6938C12.4418 18.7561 12.3679 18.8052 12.2867 18.8389C12.2054 18.8725 12.1182 18.8899 12.0302 18.8899C11.9423 18.8899 11.8551 18.8725 11.7738 18.8389C11.6925 18.8052 11.6187 18.7561 11.5565 18.6938C11.4943 18.6316 11.4449 18.5576 11.4113 18.4763C11.3776 18.395 11.3602 18.308 11.3602 18.22V17.0801C10.9165 17.0072 10.4917 16.8468 10.1106 16.6082C9.72943 16.3695 9.39958 16.0573 9.14023 15.6899C9.04577 15.57 8.99311 15.4226 8.99023 15.27C8.99148 15.1842 9.00997 15.0995 9.04459 15.021C9.0792 14.9425 9.12927 14.8718 9.19177 14.813C9.25428 14.7542 9.32794 14.7087 9.40842 14.679C9.4889 14.6492 9.57455 14.6359 9.66025 14.6399C9.74504 14.6401 9.82883 14.6582 9.90631 14.6926C9.98379 14.7271 10.0532 14.7773 10.1102 14.8401C10.4326 15.2576 10.8657 15.5763 11.3602 15.76V13.21C10.0302 12.69 9.36023 11.9099 9.36023 10.8999C9.38027 10.3592 9.5928 9.84343 9.9595 9.44556C10.3262 9.04769 10.8229 8.79397 11.3602 8.72998V7.62988C11.3602 7.5419 11.3776 7.45482 11.4113 7.37354C11.4449 7.29225 11.4943 7.21847 11.5565 7.15625C11.6187 7.09403 11.6925 7.04466 11.7738 7.01099C11.8551 6.97732 11.9423 6.95996 12.0302 6.95996C12.1182 6.95996 12.2054 6.97732 12.2867 7.01099C12.3679 7.04466 12.4418 7.09403 12.504 7.15625C12.5662 7.21847 12.6156 7.29225 12.6492 7.37354C12.6829 7.45482 12.7003 7.5419 12.7003 7.62988V8.71997C13.0724 8.77828 13.4289 8.91103 13.7485 9.11035C14.0681 9.30967 14.3442 9.57137 14.5602 9.87988C14.6555 9.99235 14.7117 10.1329 14.7202 10.28C14.7229 10.3662 14.7084 10.4519 14.6776 10.5325C14.6467 10.613 14.6002 10.6867 14.5406 10.749C14.481 10.8114 14.4096 10.8613 14.3306 10.8958C14.2516 10.9303 14.1665 10.9487 14.0802 10.95C13.99 10.9475 13.9013 10.9257 13.8202 10.886C13.7391 10.8463 13.6675 10.7897 13.6102 10.72C13.3718 10.4221 13.0575 10.1942 12.7003 10.0601V12.3101L12.9503 12.4099C14.2203 12.9099 15.0103 13.63 15.0103 14.77C14.9954 15.3808 14.7481 15.9629 14.3189 16.3977C13.8897 16.8325 13.3108 17.0871 12.7003 17.1099ZM11.3602 11.73V10.0999C11.1988 10.1584 11.0599 10.2662 10.963 10.408C10.8662 10.5497 10.8162 10.7183 10.8203 10.8899C10.8173 11.0676 10.8669 11.2424 10.963 11.3918C11.0591 11.5413 11.1973 11.6589 11.3602 11.73ZM13.5502 14.8C13.5502 14.32 13.2203 14.03 12.7003 13.8V15.8C12.9387 15.7639 13.1561 15.6427 13.3123 15.459C13.4685 15.2752 13.553 15.0412 13.5502 14.8Z" fill="#000000"/>
+                    <path d="M18 3.96997H6C4.93913 3.96997 3.92172 4.39146 3.17157 5.1416C2.42142 5.89175 2 6.9091 2 7.96997V17.97C2 19.0308 2.42142 20.0482 3.17157 20.7983C3.92172 21.5485 4.93913 21.97 6 21.97H18C19.0609 21.97 20.0783 21.5485 20.8284 20.7983C21.5786 20.0482 22 19.0308 22 17.97V7.96997C22 6.9091 21.5786 5.89175 20.8284 5.1416C20.0783 4.39146 19.0609 3.96997 18 3.96997Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            </div>
+            <div class ="content-text">    
+                <div class ="content-number" > Facture Impayé </div>    
+                <div class ="content-number" id="">(loading)  </div>
+            </div>        
+        </div>
+    </a> 
+      
+         
+        </div>
+       <div id="reclamationsDialog" style="display: none;">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom Utilisateur</th>
+                <th>Type Reclamation</th>
+                <th>Branchement</th>
+                <th>Commentaire</th>
+            </tr>
+        </thead>
+        <tbody id="reclamationsTableBody">
+            <!-- Reclamations will be added here dynamically -->
+        </tbody>
+    </table>
+</div>    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Client</h5>
+            <p class="card-text">Nomprenom: {{ app.user.Nomprenom }}</p>
+            <p class="card-text">Adresse: {{ app.user.Adresse }}</p>
+            <p class="card-text">Numéro de téléphone: {{ app.user.Tel }}</p>
+            <a href="{{ path('modifiercompte') }}" class="btn btn-modifier-compte">Modifier Compte</a>
+            <a href="{{ path('createreclamation') }}" class="btn btn-modifier-compte">+Prestation</a>
+        </div>
+    </div>
+</div>
+<div style="display: flex;">
+    <div style="flex: 1;"></div> {# This div will take up the remaining space on the left #}
+    <div style="flex: 1; max-width: 50%;"> {# This div will take up half of the available space #}
+        <table class="table">
+              <form action="{{ path('fetch_contract') }}" method="post">
+            <input type="text" name="contract_number" placeholder="Numéro de contrat">
+            <button type="submit">Chercher</button>
+        </form>
+            <thead>
+                <tr>
+                    <th>Numéro Contrat</th>
+                    <th>Nom et Prénom</th>
+                    <th>Adresse</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contract in contractsToShow %}
+                    <tr>
+                        <td>{{ contract.getNumContrat() }}</td>
+                        <td>{{ contract.client.Nomprenom }}</td>
+                        <td>{{ contract.client.Adresse }}</td>
+                    <td>
+                <form action="{{ path('remove_contract', {'index': loop.index0}) }}" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      
+    </div>
+</div>
+    
+ 
+
+
+
+<!-- JavaScript to fetch and display ongoing reclamations -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const button = document.getElementById("getOngoingReclamations");
+        const reclamationsCount = document.getElementById("reclamationsCount");
+        const reclamationsList = document.getElementById("reclamationsList");
+        // Function to fetch and display the number of ongoing reclamations
+        function fetchOngoingReclamationsCount() {
+            fetch('{{ path('ongoing_reclamations_count') }}')
+                .then(response => response.json())
+                .then(count => {
+                    reclamationsCount.textContent = count;
+                })
+                .catch(error => console.error('Error fetching reclamations count:', error));
+        }
+
+        // Initial fetching of the count and list of reclamations
+        fetchOngoingReclamationsCount();
+        fetchOngoingReclamations();
+
+        // Add event listener to the button to refresh the reclamations list when clicked
+        button.addEventListener("click", () => {
+            fetchOngoingReclamations();
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const button = document.getElementById("getRefusReclamations");
+        const refusReclamationsCount = document.getElementById("refusReclamationsCount");
+        const refusReclamationsList = document.getElementById("refusReclamationsList");
+
+        // Function to fetch reclamations with "refus" state
+        function fetchRefusReclamations() {
+            fetch('{{ path('refus_reclamations') }}')
+                .then(response => response.json())
+                .then(data => {
+                    refusReclamationsList.innerHTML = ''; // Clear the list before appending new reclamations
+                    data.forEach(reclamation => {
+                        const li = document.createElement('li');
+                        li.textContent = `${reclamation.typeReclamation} - ${reclamation.branchement} - ${reclamation.commentaire}`;
+                        refusReclamationsList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error fetching refus reclamations:', error));
+        }
+
+        // Function to fetch and display the number of reclamations with "refus" state
+        function fetchRefusReclamationsCount() {
+            fetch('{{ path('refus_reclamations_count') }}')
+                .then(response => response.json())
+                .then(count => {
+                    refusReclamationsCount.textContent = count;
+                })
+                .catch(error => console.error('Error fetching refus reclamations count:', error));
+        }
+
+        // Initial fetching of the count and list of reclamations with "refus" state
+        fetchRefusReclamationsCount();
+        fetchRefusReclamations();
+
+        // Add event listener to the button to refresh the reclamations list when clicked
+        button.addEventListener("click", () => {
+            fetchRefusReclamations();
+        });
+    });
+</script>
+
+
+
+
+    <!-- Inclusion des fichiers JavaScript de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+
 {% endblock %}

@@ -1,0 +1,64 @@
+{# templates/client/ongoing_reclamations.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<style>
+
+/* Style pour le tableau des réclamations en cours */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #133595;;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #133595;;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #133595;;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid #133595;;
+}
+</style>
+
+    <h1>Réclamations en cours</h1>
+    {% if rejeteReclamations|length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                  
+                    <th>Nom d'utilisateur</th>
+                    <th>Type de réclamation</th>
+                    <th>Branchement</th>
+                    <th>Commentaire</th>
+                      <th>raison</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for reclamation in rejeteReclamations %}
+                    <tr>
+                       
+                        <td>{{ reclamation.nomUtilisateur }}</td>
+                        <td>{{ reclamation.typeReclamation }}</td>
+                        <td>{{ reclamation.branchement }}</td>
+                        <td>{{ reclamation.commentaire }}</td>
+                         <td>{{ reclamation.raison }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune réclamation en cours pour le moment.</p>
+    {% endif %}
+{% endblock %}

@@ -24,14 +24,17 @@ class ClientType extends AbstractType
             ->add('Motdepasse', PasswordType::class)
             ->add('Tel', TelType::class)
             ->add('Cin', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'S\'inscrire'])
-        ;
+            ->add('save', SubmitType::class, ['label' => 'S\'inscrire']) ;
+            if (!$options['mapped']) {
+            $builder->remove('Motdepasse');
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Client::class,
+             'mapped' => true, 
         ]);
     }
 }
