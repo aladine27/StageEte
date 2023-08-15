@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement Annulé{% endblock %}
+
+{% block body %}
+    <h1>Paiement Annulé</h1>
+    <p>Votre paiement a été annulé pour la facture numéro {{ facture.getNumFacture() }}.</p>
+{% endblock %}

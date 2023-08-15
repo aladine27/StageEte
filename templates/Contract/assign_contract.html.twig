@@ -201,9 +201,10 @@
     {{ form_row(form.client) }}
     {{ form_row(form.Num_Contrat) }}
     {{ form_row(form.Periode) }}
-    {{ form_row(form.Type_Facture) }}
-    {{ form_row(form.Date_limite_paiement) }}
-    {{ form_row(form.NetAPayer) }}
+    {{ form_row(form.ordre) }}
+    {{ form_row(form.Date_debut_contrat) }}
+         {{ form_row(form.tournee) }}
+  
     <button type="submit">Ajouter Contract</button>
     {{ form_end(form) }}
 {% endblock %}

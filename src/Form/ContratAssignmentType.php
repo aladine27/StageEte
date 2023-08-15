@@ -25,9 +25,10 @@ class ContratAssignmentType extends AbstractType
             ])
             ->add('Num_Contrat')
             ->add('Periode')
-            ->add('Type_Facture')
-            ->add('Date_limite_paiement', DateTimeType::class) // Corrected DateTimeType
-            ->add('NetAPayer', NumberType::class);
+            ->add('ordre')
+            ->add('tournee')
+            ->add('Date_debut_contrat', DateTimeType::class); // Corrected DateTimeType
+           
     }
 
     public function configureOptions(OptionsResolver $resolver)

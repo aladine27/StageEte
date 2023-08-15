@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factures Impayées{% endblock %}
+
+{% block body %}
+    <h1>Factures Impayées</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro Contrat</th>
+                <th>Période</th>
+                <th>Type Facture</th>
+                <th>Date Limite Payment</th>
+                <th>Net à Payer</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+               {% for facture in facturesImpayees %}
+                <tr>
+                    <td>{{ facture.id }}</td>
+                    <td>{{ facture.getContrat().getNumContrat() }}</td>
+                    <td>{{ facture.getContrat().getPeriode() }}</td>
+                    <td>{{ facture.getTypeFact() }}</td>
+                    <td>{{ facture.getDateLimPay()|date('d/m/Y') }}</td>
+                    <td>{{ facture.getNetApayer() }}</td>
+                    <td>
+                
+               <a href="{{ path('payer_facture', {'factureId': facture.id}) }}" class="btn btn-primary">Payer Facture</a>
+
+{{ dump(path('payer_facture', {'factureId': facture.id})) }}
+
+                </td>
+                </tr>
+            {% endfor %}
+          
+        </tbody>
+    </table>
+{% endblock %}

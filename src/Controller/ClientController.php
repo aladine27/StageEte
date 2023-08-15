@@ -20,6 +20,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use App\Entity\Reclamation;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class ClientController extends AbstractController implements LogoutSuccessHandlerInterface
 
@@ -82,10 +84,11 @@ public function home(Request $request): Response
 
     // Récupérer l'utilisateur connecté
     $client = $this->getUser();
-
+    $contractsToShow =array();
     // Utilisez la nouvelle vue "portal.html.twig" comme gabarit de base
     return $this->render('client/home.html.twig', [
-        'client' => $client, // Passer le client à la vue
+        'client' => $client,
+        'contractsToShow' => $contractsToShow // Passer le client à la vue
     ]);
 }
 
@@ -150,8 +153,46 @@ public function login(Request $request, AuthenticationUtils $authenticationUtils
         'error' => $error,
     ]);
 }
+#[Route("/reset-password", name: "reset_password")]
+public function resetPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $randomPassword = null;
 
-   #[Route("/modifiercompte", name: "modifiercompte")]
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+
+            // Recherche de l'utilisateur par e-mail
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
+
+            if ($user) {
+                // Générer un mot de passe aléatoire
+                $randomPassword = bin2hex(random_bytes(8));
+
+                // Encoder le mot de passe
+                $encodedPassword = $passwordEncoder->encodePassword($user, $randomPassword);
+
+                // Mettre à jour le mot de passe dans la base de données
+                $user->setPassword($encodedPassword);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // Rediriger vers la page de connexion avec un message de succès
+                $this->addFlash('success', 'Un nouveau mot de passe a été généré.');
+                return $this->redirectToRoute('login');
+            } else {
+                // Utilisateur non trouvé, afficher un message d'erreur
+                $this->addFlash('error', 'Aucun utilisateur trouvé avec cet e-mail.');
+            }
+        }
+
+        // Afficher le formulaire de réinitialisation de mot de passe
+        return $this->render('client/reset_password.html.twig', [
+            'randomPassword' => $randomPassword,
+        ]);
+    }
+
+#[Route("/modifiercompte", name: "modifiercompte")]
 public function modifierCompte(Request $request): Response
 {
     // Récupérer le client connecté
@@ -231,64 +272,7 @@ public function createReclamation(Request $request): Response
         return $this->redirectToRoute('home');
     }
 
-#[Route("/forgotpassword", name: "forgotpassword")]
-public function forgotPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenGeneratorInterface $tokenGenerator, \Swift_Mailer $mailer): Response
-{
-    $form = $this->createFormBuilder()
-        ->add('email')
-        ->getForm();
 
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $formData = $form->getData();
-        $email = $formData['email'];
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $user = $entityManager->getRepository(Client::class)->findOneBy(['Mail' => $email]);
-
-        if (!$user) {
-            throw new CustomUserMessageAuthenticationException('Aucun utilisateur n\'est associé à cette adresse e-mail.');
-        }
-
-        // Generate a token for password reset link
-        $token = $tokenGenerator->generateToken();
-
-        // Set the token and expiration date in the user entity
-        $user->setResetToken($token);
-        $user->setResetTokenExpiresAt(new \DateTime('+1 hour'));
-        $entityManager->flush();
-
-        // Send the password reset email
-        $resetUrl = $this->generateUrl(
-            'resetpassword',
-            ['token' => $token],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-
-        $message = (new \Swift_Message('Réinitialisation de mot de passe'))
-            ->setFrom('alaedineibrahim@gmail.com') // Replace with your email address
-            ->setTo($email)
-            ->setBody(
-                $this->renderView('emails/reset_password.html.twig', [
-                    'resetUrl' => $resetUrl,
-                    'user' => $user,
-                ]),
-                'text/html'
-            );
-
-        $mailer->send($message);
-
-        // Display success message and redirect to login page
-        $this->addFlash('success', 'Un lien de réinitialisation de mot de passe a été envoyé à votre adresse e-mail.');
-        return $this->redirectToRoute('login');
-    }
-
-    // Display the "Forgot Password" form
-    return $this->render('client/forgotpassword.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
 #[Route("/ongoing-reclamations", name: "ongoing_reclamations", methods: ["GET"])]
     public function getOngoingReclamations(): Response
     {
@@ -332,7 +316,7 @@ public function listOngoingReclamations(): Response
         'ongoingReclamations' => $ongoingReclamations,
     ]);
 } 
-       #[Route("/refus-reclamations", name: "refus_reclamations", methods: ["GET"])]
+#[Route("/refus-reclamations", name: "refus_reclamations", methods: ["GET"])]
     public function getRefusReclamations(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();

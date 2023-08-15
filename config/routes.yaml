@@ -12,5 +12,18 @@ client_login:
 home:
     path: /home
     controller: App\Controller\ClientController::home
+app_facture_count_impayees:
+    path: /factures_impayees_count
+    controller: App\Controller\FactureController::countFacturesImpayees
+    methods: ['GET']
+factures_impayees:
+    path: /factures_impayees
+    controller: App\Controller\FactureController::facturesImpayees
+    methods: ['GET']
+
+payer_facture:
+    path: '/payer-facture/{factureId}'
+    controller: App\Controller\FactureController::payerFacture
+    methods: ['GET']
 
     

@@ -3,7 +3,8 @@
 // src/Entity/Contrat.php
 
 namespace App\Entity;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: "App\Repository\ContratRepository")]
 class Contrat
@@ -24,13 +25,50 @@ class Contrat
     private $Periode;
 
     #[ORM\Column(type:"string", length:255)]
-    private $Type_Facture;
+    private $ordre;
+     #[ORM\Column(type:"string", length:255)]
+    private $tournee;
 
     #[ORM\Column(type:"datetime")]
-    private $Date_limite_paiement;
+    private $Date_debut_contrat;
 
-    #[ORM\Column(type:"float")]
-    private $NetAPayer;
+#[ORM\OneToMany(targetEntity: Facture::class, mappedBy: "contrat")]
+    private $factures;
+
+    public function __construct()
+    {
+        $this->factures = new ArrayCollection();
+    }
+     public function __toString(): string
+    {
+        return $this->Num_Contrat; // Utilisez la propriété appropriée pour l'affichage
+    }
+
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Facture $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures[] = $facture;
+            $facture->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Facture $facture): self
+    {
+        if ($this->factures->removeElement($facture)) {
+            if ($facture->getContrat() === $this) {
+                $facture->setContrat(null);
+            }
+        }
+
+        return $this;
+    }
 
     // Getters and Setters
     // ...
@@ -38,6 +76,16 @@ class Contrat
     {
         return $this->id;
     }
+     public function getTournee(): ?int
+    {
+        return $this->tournee;
+    }
+    public function setTournee(string $tournee): self
+    {
+        $this->tournee = $tournee;
+        return $this;
+    }
+
 
     public function getClient(): ?Client
     {
@@ -72,36 +120,26 @@ class Contrat
         return $this;
     }
 
-    public function getTypeFacture(): ?string
+    public function getordre(): ?string
     {
-        return $this->Type_Facture;
+        return $this->ordre;
     }
 
-    public function setTypeFacture(string $Type_Facture): self
+    public function setordre(string $ordre): self
     {
-        $this->Type_Facture = $Type_Facture;
+        $this->ordre = $ordre;
         return $this;
     }
 
-    public function getDateLimitePaiement(): ?\DateTimeInterface
+    public function getDatedebutcontrat(): ?\DateTimeInterface
     {
-        return $this->Date_limite_paiement;
+        return $this->Date_debut_contrat;
     }
 
-    public function setDateLimitePaiement(\DateTimeInterface $Date_limite_paiement): self
+    public function setDatedebutcontrat(\DateTimeInterface $Date_debut_contrat): self
     {
-        $this->Date_limite_paiement = $Date_limite_paiement;
+        $this->Date_debut_contrat = $Date_debut_contrat;
         return $this;
     }
 
-    public function getNetAPayer(): ?float
-    {
-        return $this->NetAPayer;
-    }
-
-    public function setNetAPayer(float $NetAPayer): self
-    {
-        $this->NetAPayer = $NetAPayer;
-        return $this;
-    }
 }

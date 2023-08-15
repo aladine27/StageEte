@@ -195,9 +195,10 @@
                 <th>Client</th>
                 <th>Num Contrat</th>
                 <th>Periode</th>
-                <th>Type Facture</th>
-                <th>Date Limite Paiement</th>
-                <th>Net à Payer</th>
+                <th>ordre</th>
+                 <th>tournee</th>
+
+          
                 <th>Actions</th>
             </tr>
             {% for contract in contracts %}
@@ -206,9 +207,10 @@
                     <td>{{ contract.client.Nomprenom }}</td>
                     <td>{{ contract.NumContrat }}</td>
                     <td>{{ contract.Periode }}</td>
-                    <td>{{ contract.TypeFacture }}</td>
-                    <td>{{ contract.Datelimitepaiement|date('Y-m-d') }}</td>
-                    <td>{{ contract.NetAPayer }}</td>
+                    <td>{{ contract.ordre }}</td>
+                        <td>{{ contract.tournee }}</td>
+
+             
                     <td>
                         <a href="{{ path('edit_contract', { 'id': contract.id }) }}">Edit</a>
                         <a href="{{ path('delete_contract', { 'id': contract.id }) }}" onclick="return confirm('Are you sure you want to delete this contract?')">Delete</a>
